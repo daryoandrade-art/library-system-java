@@ -30,6 +30,25 @@ public class Biblioteca {
         return livrosDisponiveis;
     }
 
+    public List<Emprestimo> listarEmprestimos(){
+        List<Emprestimo> emprestimosAtivos = new ArrayList<>();
+        for (Emprestimo emprestimo : emprestimos){
+            if(emprestimo.getDataDevolucao() == null){
+                emprestimosAtivos.add(emprestimo);
+            }
+        }
+        return emprestimosAtivos;
+    }
+
+    public Emprestimo buscarEmprestimoPorId(int id){
+        for (Emprestimo emprestimo : emprestimos){
+            if(emprestimo.getId() == id){
+                return emprestimo;
+            }
+        }
+        return null;
+    }
+
     public Livro buscarLivroPorId(int id){
         for (Livro livro : livros){
             if(livro.getId() == id){

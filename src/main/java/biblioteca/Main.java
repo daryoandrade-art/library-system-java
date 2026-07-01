@@ -67,11 +67,12 @@ public class Main {
             switch (opcao){
                 case 1: emprestarLivro(biblioteca);
                     break;
-                case 2: System.out.println("Devolver livro");
+                case 2: devolverLivro(biblioteca);
                     break;
                 case 3: System.out.println("Cadastros");
                     break;
                 case 9: System.out.println("Saindo...");
+                    scan.close();
                     break;
                 default: System.out.println("Opção inválida");
                     menuPrincipal(biblioteca);
@@ -114,6 +115,35 @@ public class Main {
         String nomeCliente = scan.nextLine();
         Emprestimo emprestimo = biblioteca.registraEmprestimo(livro, nomeCliente);
         System.out.println("\nEmprestimo registrado com sucesso!");
+        menuPrincipal(biblioteca);
+
+    }
+
+    public static void devolverLivro(Biblioteca biblioteca){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\n--- LIVROS EMPRESTADOS ---");
+        for (Emprestimo emprestimo : biblioteca.listarEmprestimos()) {
+            System.out.printf("ID: %d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(), emprestimo.getLivro().getTitulo(), emprestimo.getNomeCliente());
+        }
+        System.out.print("Digite o ID do empréstimo a devolver: ");
+        if(!scan.hasNextInt()){
+            System.out.println("Entrada invalida! Digite apenas números");
+            scan.nextLine(); //limpa o scan
+            return;
+        }
+        int id = scan.nextInt();
+        scan.nextLine(); //limpa o scan
+        Emprestimo emprestimo = biblioteca.buscarEmprestimoPorId(id);
+
+        if (emprestimo == null) {
+            System.out.println("Empréstimo não encontrado!");
+            return;
+        }
+        if (emprestimo.getLivro().getStatus() == LivroEnum.DISPONIVEL) {
+            System.out.println("Livro já devolvido!");
+            return;
+        }
+        emprestimo.devolveLivro();
         menuPrincipal(biblioteca);
     }
 }
