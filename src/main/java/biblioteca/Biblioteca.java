@@ -14,6 +14,7 @@ public class Biblioteca {
     }
 
     public void adicionaEmprestimo(Emprestimo emprestimo){
+
         this.emprestimos.add(emprestimo);
     }
 

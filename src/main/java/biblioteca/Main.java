@@ -42,11 +42,10 @@ public class Main {
         biblioteca.adicionaLivro(livro9);
         biblioteca.adicionaLivro(livro10);
 
-        Emprestimo emp1 = new Emprestimo(livro3, "Daryo S. Andrade");
-        biblioteca.adicionaEmprestimo(emp1);
+        biblioteca.registraEmprestimo(livro1, "Daryo S. Andrade");
 
-        Emprestimo emp2 = new Emprestimo(livro6, "Daryo S. Andrade");
-        biblioteca.adicionaEmprestimo(emp2);
+        biblioteca.registraEmprestimo(livro6, "Daryo S. Andrade");
+
 
         menuPrincipal(biblioteca);
     }
@@ -59,7 +58,6 @@ public class Main {
         System.out.println("2 - Devolver livro");
         System.out.println("3 - Cadastros");
         System.out.println("9 - Sair");
-
         try{
             System.out.print("Escolha uma opção: ");
             int opcao = scan.nextInt();

@@ -57,4 +57,9 @@ public class Livro {
     public int getId() {
         return id;
     }
+
+    public void emprestaLivro(){
+        this.status = LivroEnum.INDISPONIVEL;
+        this.dataAtualizacao = LocalDateTime.now();
+    }
 }

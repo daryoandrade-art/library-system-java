@@ -18,7 +18,6 @@ public class Emprestimo {
         this.nomeCliente = nomeCliente;
         this.dataEmprestimo = LocalDate.now();
         this.dataDevolucao = null;
-        livro.emprestaLivro();
     }
 
     public void devolveLivro(){
