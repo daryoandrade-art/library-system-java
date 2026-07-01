@@ -12,11 +12,11 @@ public class Livro {
     private LocalDateTime dataCadastro;
     private LocalDateTime dataAtualizacao;
 
-    public Livro(String titulo, Autor autor, LivroEnum status){
+    public Livro(String titulo, Autor autor){
         this.id = ++cont;
         this.titulo = titulo;
         this.autor = autor;
-        this.status = status;
+        this.status = LivroEnum.DISPONIVEL;
         this.dataCadastro = LocalDateTime.now();
         this.dataAtualizacao = LocalDateTime.now();
     }
