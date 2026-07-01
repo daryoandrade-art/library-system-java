@@ -1,7 +1,10 @@
 package main.java.biblioteca;
 
+import javax.sound.midi.Soundbank;
 import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Formatter;
 import java.util.Scanner;
 
@@ -69,7 +72,7 @@ public class Main {
                     break;
                 case 2: devolverLivro(biblioteca);
                     break;
-                case 3: System.out.println("Cadastros");
+                case 3: menuCadastro(biblioteca);
                     break;
                 case 9: System.out.println("Saindo...");
                     scan.close();
@@ -145,5 +148,69 @@ public class Main {
         }
         emprestimo.devolveLivro();
         menuPrincipal(biblioteca);
+    }
+
+    public static void menuCadastro(Biblioteca biblioteca){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Menu Cadastro");
+        System.out.println("1 - Cadastro Autor");
+        System.out.println("2 - Cadastro Livro");
+        System.out.println("3 - Voltar ao menu principal");
+        try {
+            System.out.print("Escolha uma opção: ");
+            int opcao = scan.nextInt();
+            scan.nextLine(); //limpa o scan
+            switch (opcao) {
+                case 1:
+                    System.out.println("Cadastro de Autor");
+                    System.out.println("Digite o nome do autor: ");
+                    String nomeAutor = scan.nextLine();
+                    System.out.println("Digite a data de nascimento do autor (DD-MM-YYY): ");
+                    String dataNascimentoStr = scan.nextLine();
+                    DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                    LocalDate dataNascimento = LocalDate.parse(dataNascimentoStr, formatador);
+                    biblioteca.cadastrarAutor(nomeAutor, dataNascimento);
+                    System.out.println("Autor cadastrado com sucesso!");
+                    menuPrincipal(biblioteca);
+                    break;
+                case 2:
+                    System.out.println("Cadastro de Livro");
+                    System.out.println("Para cadastro de livro selecione um autor dos autores cadastrados:");
+                    for (Autor autor : biblioteca.listarAutores()) {
+                        System.out.printf("ID: %d | Nome: %s\n", autor.getId(), autor.getNome());
+                    }
+                    System.out.print("Escolha uma opcão: ");
+                    if(!scan.hasNextInt()){
+                        System.out.println("Entrada invalida! Digite apenas números");
+                        scan.nextLine(); //limpa o scan
+                        return;
+                    }
+                    int id = scan.nextInt();
+                    scan.nextLine(); //limpa o scan
+                    Autor autor = biblioteca.buscarAutorPorId(id);
+                    if (autor == null) {
+                        System.out.println("Autor não encontrado!");
+                        return;
+                    }
+                    String autorNome = autor.getNome();
+                    System.out.println("Digite o nome do livro");
+                    String titulo = scan.nextLine();
+                    biblioteca.cadastrarLivro(titulo, autor);
+                    System.out.println("Livro cadastrado com sucesso!");
+                    menuPrincipal(biblioteca);
+                    break;
+                case 3:
+                    System.out.println("Voltando ao menu principal...");
+                    menuPrincipal(biblioteca);
+                    break;
+                default:
+                    System.out.println("Opção inválida");
+                    menuCadastro(biblioteca);
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("Opção inválida");
+            menuCadastro(biblioteca);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package main.java.biblioteca;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +41,19 @@ public class Biblioteca {
         return emprestimosAtivos;
     }
 
+    public List<Autor> listarAutores(){
+        return this.autores;
+    }
+
+    public Autor buscarAutorPorId(int id){
+        for (Autor autor : autores){
+            if(autor.getId() == id){
+                return autor;
+            }
+        }
+        return null;
+    }
+
     public Emprestimo buscarEmprestimoPorId(int id){
         for (Emprestimo emprestimo : emprestimos){
             if(emprestimo.getId() == id){
@@ -63,6 +77,16 @@ public class Biblioteca {
         emprestimos.add(emprestimo);
         livro.emprestaLivro();
         return emprestimo;
+    }
+
+    public void cadastrarAutor(String nomeAutor, LocalDate dataNasciment){
+        Autor autor = new Autor(nomeAutor, dataNasciment);
+        this.autores.add(autor);
+    }
+
+    public void cadastrarLivro(String titulo, Autor autor){
+        Livro livro = new Livro(titulo, autor);
+        this.livros.add(livro);
     }
 
 }
