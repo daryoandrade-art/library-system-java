@@ -1,5 +1,4 @@
-Objetivo
-
+## Objetivo
 Desenvolver um sistema de console para gerenciar o empréstimo de livros de uma biblioteca.
 
 O programa deverá interagir com o usuário, permitindo que ele veja os livros disponíveis e realize o empréstimo de um deles.
@@ -58,3 +57,15 @@ O projeto será dividido em algumas classes simples para manter a organização.
   2 - autores: Lista de autores da biblioteca
 
   3 - emprestimos: Lista de empréstimos da biblioteca
+
+
+## Status do projeto
+
+Este projeto começou como o desafio "Sistema de Biblioteca" da Rocketseat e está sendo evoluído com funcionalidades adicionais:
+
+- [x] CRUD de livros, autores e empréstimos
+- [x] Menu interativo via console
+- [ ] Persistência de dados em arquivo
+- [ ] Multa por atraso na devolução
+- [ ] Busca por autor/categoria
+- [ ] Testes unitários (JUnit)
