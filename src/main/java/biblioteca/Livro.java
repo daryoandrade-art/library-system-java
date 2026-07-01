@@ -22,7 +22,7 @@ public class Livro {
     }
 
     public void emprestaLivro(){
-        this.status = LivroEnum.EMPRESTADO;
+        this.status = LivroEnum.INDISPONIVEL;
         this.dataAtualizacao = LocalDateTime.now();
     }
 
