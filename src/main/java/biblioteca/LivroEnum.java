@@ -1,4 +1,4 @@
-package main.java.biblioteca;
+package biblioteca;
 
 public enum LivroEnum {
     DISPONIVEL,
