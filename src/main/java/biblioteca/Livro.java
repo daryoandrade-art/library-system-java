@@ -21,11 +21,6 @@ public class Livro {
         this.dataAtualizacao = LocalDateTime.now();
     }
 
-    public void emprestaLivro(){
-        this.status = LivroEnum.INDISPONIVEL;
-        this.dataAtualizacao = LocalDateTime.now();
-    }
-
     public void devolveLivro(){
         this.status = LivroEnum.DISPONIVEL;
         this.dataAtualizacao = LocalDateTime.now();

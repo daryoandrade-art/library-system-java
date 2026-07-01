@@ -1,11 +1,7 @@
 package main.java.biblioteca;
 
-import javax.sound.midi.Soundbank;
-import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.Formatter;
 import java.util.Scanner;
 
 public class Main {
