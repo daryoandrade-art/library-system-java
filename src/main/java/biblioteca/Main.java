@@ -1,6 +1,8 @@
 package main.java.biblioteca;
 
+import java.sql.SQLOutput;
 import java.time.LocalDate;
+import java.util.Formatter;
 import java.util.Scanner;
 
 public class Main {
@@ -47,10 +49,10 @@ public class Main {
         Emprestimo emp2 = new Emprestimo(livro6, "Daryo S. Andrade");
         biblioteca.adicionaEmprestimo(emp2);
 
-        menuPrincipal();
+        menuPrincipal(biblioteca);
     }
 
-    public static void menuPrincipal() {
+    public static void menuPrincipal(Biblioteca biblioteca) {
         Scanner scan = new Scanner(System.in);
         System.out.println("Bem vindo à sua biblioteca");
         System.out.println("O que precisa para hoje?");
@@ -63,7 +65,7 @@ public class Main {
             System.out.print("Escolha uma opção: ");
             int opcao = scan.nextInt();
             switch (opcao){
-                case 1: System.out.println("Emprestar livro");
+                case 1: emprestarLivro(biblioteca);
                     break;
                 case 2: System.out.println("Devolver livro");
                     break;
@@ -72,12 +74,46 @@ public class Main {
                 case 9: System.out.println("Saindo...");
                     break;
                 default: System.out.println("Opção inválida");
-                    menuPrincipal();
+                    menuPrincipal(biblioteca);
                     break;
             }
         } catch (Exception e){
             System.out.println("Opção inválida");
-            menuPrincipal();
+            menuPrincipal(biblioteca);
         }
+    }
+
+    public static void emprestarLivro(Biblioteca biblioteca){
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\n--- LIVROS DISPONÍVEIS ---");
+        for (Livro livro : biblioteca.ListarLivrosDisponiveis()) {
+            System.out.printf("ID: %d |  Titulo: %s\n", livro.getId(), livro.getTitulo());
+        }
+        System.out.print("Digite o ID do livro que deseja emprestar: ");
+
+        if(!scan.hasNextInt()){
+            System.out.println("Entrada invalida! Digite apenas números");
+            scan.nextLine(); //limpa o scan
+            return;
+        }
+
+        int id = scan.nextInt();
+        scan.nextLine(); //limpa o scan
+        Livro livro = biblioteca.buscarLivroPorId(id);
+
+        if (livro == null) {
+            System.out.println("Livro não encontrado!");
+            return;
+        }
+        if (livro.getStatus() == LivroEnum.INDISPONIVEL) {
+            System.out.println("Livro indisponível para empréstimo!");
+            return;
+        }
+
+        System.out.print("Digite o nome do responsavel pelo emprestimo: ");
+        String nomeCliente = scan.nextLine();
+        Emprestimo emprestimo = biblioteca.registraEmprestimo(livro, nomeCliente);
+        System.out.println("\nEmprestimo registrado com sucesso!");
+        menuPrincipal(biblioteca);
     }
 }
