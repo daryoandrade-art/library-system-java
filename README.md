@@ -13,7 +13,7 @@ Como deve funcionar
 Estrutura do Projeto
 O projeto será dividido em algumas classes simples para manter a organização. Aqui estão as classes principais e suas funcionalidades:
 
-* Livro
+### Livro
 
   1 - id: Identificador único do livro
 
@@ -28,7 +28,7 @@ O projeto será dividido em algumas classes simples para manter a organização.
   6 - dataAtualização: Data que o livro foi atualizado
 
 
-* Autor
+### Autor
 
   1 - id: Identificador único do autor
 
@@ -37,7 +37,7 @@ O projeto será dividido em algumas classes simples para manter a organização.
   3 - dataNascimento: Nascimento do autor
 
 
-* Emprestimo
+### Emprestimo
 
   1 - id: Identificador único do empréstimo
 
@@ -50,13 +50,37 @@ O projeto será dividido em algumas classes simples para manter a organização.
   5 - dataDevolucao: Data que o livro foi devolvido (pode ser nula se ainda não foi devolvido)
 
 
-* Biblioteca
+### Biblioteca
 
   1 - livros: Lista de livros na biblioteca
 
   2 - autores: Lista de autores da biblioteca
 
   3 - emprestimos: Lista de empréstimos da biblioteca
+
+## Como rodar o projeto
+
+### Pré-requisitos
+- JDK 17 ou superior instalado
+
+### Opção 1 — via IntelliJ IDEA (recomendado)
+1. Clone o repositório:
+```bash
+   git clone https://github.com/daryoandrade-art/library-system-java.git
+```
+2. Abra a pasta no IntelliJ IDEA (`File → Open`)
+3. Marque `src/main/java` como Sources Root, se necessário (`botão direito → Mark Directory as → Sources Root`)
+4. Execute a classe `Main.java` (botão direito → `Run 'Main.main()'`)
+
+### Opção 2 — via terminal
+```bash
+git clone https://github.com/daryoandrade-art/library-system-java.git
+cd library-system-java/src/main/java
+javac biblioteca/*.java
+java biblioteca.Main
+```
+
+O programa roda em modo console — todas as interações acontecem via terminal, sem interface gráfica.
 
 
 ## Status do projeto
