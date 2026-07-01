@@ -1,6 +1,7 @@
 package main.java.biblioteca;
 
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -45,5 +46,38 @@ public class Main {
 
         Emprestimo emp2 = new Emprestimo(livro6, "Daryo S. Andrade");
         biblioteca.adicionaEmprestimo(emp2);
+
+        menuPrincipal();
+    }
+
+    public static void menuPrincipal() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Bem vindo à sua biblioteca");
+        System.out.println("O que precisa para hoje?");
+        System.out.println("1 - Emprestar livro");
+        System.out.println("2 - Devolver livro");
+        System.out.println("3 - Cadastros");
+        System.out.println("9 - Sair");
+
+        try{
+            System.out.print("Escolha uma opção: ");
+            int opcao = scan.nextInt();
+            switch (opcao){
+                case 1: System.out.println("Emprestar livro");
+                    break;
+                case 2: System.out.println("Devolver livro");
+                    break;
+                case 3: System.out.println("Cadastros");
+                    break;
+                case 9: System.out.println("Saindo...");
+                    break;
+                default: System.out.println("Opção inválida");
+                    menuPrincipal();
+                    break;
+            }
+        } catch (Exception e){
+            System.out.println("Opção inválida");
+            menuPrincipal();
+        }
     }
 }
