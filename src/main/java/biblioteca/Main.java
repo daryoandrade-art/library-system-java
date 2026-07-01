@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Scanner scan = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
 
         Autor autor1 = new Autor("J.K. Rowling", LocalDate.of(1965, 7, 31));
@@ -47,11 +48,11 @@ public class Main {
         biblioteca.registraEmprestimo(livro6, "Daryo S. Andrade");
 
 
-        menuPrincipal(biblioteca);
+        menuPrincipal(biblioteca, scan);
+        scan.close();
     }
 
-    public static void menuPrincipal(Biblioteca biblioteca) {
-        Scanner scan = new Scanner(System.in);
+    public static void menuPrincipal(Biblioteca biblioteca, Scanner scan) {
         System.out.println("Bem vindo à sua biblioteca");
         System.out.println("O que precisa para hoje?");
         System.out.println("1 - Emprestar livro");
@@ -62,27 +63,25 @@ public class Main {
             System.out.print("Escolha uma opção: ");
             int opcao = scan.nextInt();
             switch (opcao){
-                case 1: emprestarLivro(biblioteca);
+                case 1: emprestarLivro(biblioteca, scan);
                     break;
-                case 2: devolverLivro(biblioteca);
+                case 2: devolverLivro(biblioteca, scan);
                     break;
-                case 3: menuCadastro(biblioteca);
+                case 3: menuCadastro(biblioteca, scan);
                     break;
                 case 9: System.out.println("Saindo...");
-                    scan.close();
                     break;
                 default: System.out.println("Opção inválida");
-                    menuPrincipal(biblioteca);
+                    menuPrincipal(biblioteca, scan);
                     break;
             }
         } catch (Exception e){
             System.out.println("Opção inválida");
-            menuPrincipal(biblioteca);
+            menuPrincipal(biblioteca, scan);
         }
     }
 
-    public static void emprestarLivro(Biblioteca biblioteca){
-        Scanner scan = new Scanner(System.in);
+    public static void emprestarLivro(Biblioteca biblioteca, Scanner scan){
         System.out.println("\n--- LIVROS DISPONÍVEIS ---");
         for (Livro livro : biblioteca.ListarLivrosDisponiveis()) {
             System.out.printf("ID: %d |  Titulo: %s\n", livro.getId(), livro.getTitulo());
@@ -111,13 +110,12 @@ public class Main {
         System.out.print("Digite o nome do responsavel pelo emprestimo: ");
         String nomeCliente = scan.nextLine();
         Emprestimo emprestimo = biblioteca.registraEmprestimo(livro, nomeCliente);
-        System.out.println("\nEmprestimo registrado com sucesso!");
-        menuPrincipal(biblioteca);
+        System.out.println("\nEmpréstimo registrado com sucesso!");
+        menuPrincipal(biblioteca, scan);
 
     }
 
-    public static void devolverLivro(Biblioteca biblioteca){
-        Scanner scan = new Scanner(System.in);
+    public static void devolverLivro(Biblioteca biblioteca, Scanner scan){
         System.out.println("\n--- LIVROS EMPRESTADOS ---");
         for (Emprestimo emprestimo : biblioteca.listarEmprestimos()) {
             System.out.printf("ID: %d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(), emprestimo.getLivro().getTitulo(), emprestimo.getNomeCliente());
@@ -141,11 +139,10 @@ public class Main {
             return;
         }
         emprestimo.devolveLivro();
-        menuPrincipal(biblioteca);
+        menuPrincipal(biblioteca, scan);
     }
 
-    public static void menuCadastro(Biblioteca biblioteca){
-        Scanner scan = new Scanner(System.in);
+    public static void menuCadastro(Biblioteca biblioteca, Scanner scan){
         System.out.println("Menu Cadastro");
         System.out.println("1 - Cadastro Autor");
         System.out.println("2 - Cadastro Livro");
@@ -165,7 +162,7 @@ public class Main {
                     LocalDate dataNascimento = LocalDate.parse(dataNascimentoStr, formatador);
                     biblioteca.cadastrarAutor(nomeAutor, dataNascimento);
                     System.out.println("Autor cadastrado com sucesso!");
-                    menuPrincipal(biblioteca);
+                    menuPrincipal(biblioteca, scan);
                     break;
                 case 2:
                     System.out.println("Cadastro de Livro");
@@ -191,20 +188,20 @@ public class Main {
                     String titulo = scan.nextLine();
                     biblioteca.cadastrarLivro(titulo, autor);
                     System.out.println("Livro cadastrado com sucesso!");
-                    menuPrincipal(biblioteca);
+                    menuPrincipal(biblioteca, scan);
                     break;
                 case 3:
                     System.out.println("Voltando ao menu principal...");
-                    menuPrincipal(biblioteca);
+                    menuPrincipal(biblioteca, scan);
                     break;
                 default:
                     System.out.println("Opção inválida");
-                    menuCadastro(biblioteca);
+                    menuCadastro(biblioteca, scan);
                     break;
             }
         } catch (Exception e) {
             System.out.println("Opção inválida");
-            menuCadastro(biblioteca);
+            menuCadastro(biblioteca, scan);
         }
     }
 }
