@@ -4,7 +4,9 @@ import biblioteca.model.Autor;
 import biblioteca.model.Emprestimo;
 import biblioteca.model.Livro;
 import biblioteca.model.LivroEnum;
+import biblioteca.repository.AutorRepository;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,19 +14,14 @@ import java.util.List;
 public class Biblioteca {
     private List<Livro> livros = new ArrayList<>();
     private List<Emprestimo> emprestimos = new ArrayList<>();
-    private List<Autor> autores = new ArrayList<>();
+    private final AutorRepository autorRepository = new AutorRepository();
 
     public void adicionaLivro(Livro livro) {
         this.livros.add(livro);
     }
 
     public void adicionaEmprestimo(Emprestimo emprestimo){
-
         this.emprestimos.add(emprestimo);
-    }
-
-    public void adicionaAutor(Autor autor){
-        this.autores.add(autor);
     }
 
     public List<Livro> ListarLivrosDisponiveis(){
@@ -45,19 +42,6 @@ public class Biblioteca {
             }
         }
         return emprestimosAtivos;
-    }
-
-    public List<Autor> listarAutores(){
-        return this.autores;
-    }
-
-    public Autor buscarAutorPorId(int id){
-        for (Autor autor : autores){
-            if(autor.getId() == id){
-                return autor;
-            }
-        }
-        return null;
     }
 
     public Emprestimo buscarEmprestimoPorId(int id){
@@ -85,15 +69,22 @@ public class Biblioteca {
         return emprestimo;
     }
 
-    public void cadastrarAutor(String nomeAutor, LocalDate dataNasciment){
-        Autor autor = new Autor(nomeAutor, dataNasciment);
-        this.autores.add(autor);
-    }
-
     public void cadastrarLivro(String titulo, Autor autor){
         Livro livro = new Livro(titulo, autor);
         this.livros.add(livro);
     }
 
+    public Autor cadastrarAutor(String nome, LocalDate dataNascimento) throws SQLException{
+        Autor autor = new Autor(nome, dataNascimento);
+        return autorRepository.salvar(autor);
+    }
+
+    public List<Autor> listarAutores() throws SQLException{
+        return autorRepository.listarTodos();
+    }
+
+    public Autor buscarAutorPorId(int id) throws SQLException{
+        return autorRepository.buscarPorId(id);
+    }
 }
 
