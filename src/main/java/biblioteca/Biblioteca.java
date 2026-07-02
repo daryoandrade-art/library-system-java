@@ -1,4 +1,9 @@
-package biblioteca.model;
+package biblioteca;
+
+import biblioteca.model.Autor;
+import biblioteca.model.Emprestimo;
+import biblioteca.model.Livro;
+import biblioteca.model.LivroEnum;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
