@@ -38,3 +38,6 @@ logs/
 *.iml
 *.tmp
 *.log
+
+## Projeto ###
+.env
