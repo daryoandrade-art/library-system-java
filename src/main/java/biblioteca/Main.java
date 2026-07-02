@@ -1,6 +1,10 @@
 package biblioteca;
 
-import biblioteca.model.*;
+import biblioteca.model.Autor;
+import biblioteca.model.Emprestimo;
+import biblioteca.model.Livro;
+import biblioteca.model.LivroEnum;
+
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -86,9 +90,10 @@ public class Main {
     public static void emprestarLivro(Biblioteca biblioteca, Scanner scan){
         System.out.println("\n--- LIVROS DISPONÍVEIS ---");
         for (Livro livro : biblioteca.ListarLivrosDisponiveis()) {
-            System.out.printf("ID: %d |  Titulo: %s\n", livro.getId(), livro.getTitulo());
+            System.out.printf("%02d |  Titulo: %s\n", livro.getId(), livro.getTitulo());
         }
-        System.out.print("Digite o ID do livro que deseja emprestar: ");
+        System.out.println("Digite 0 para retornar ao menu principal");
+        System.out.print("Digite o numero do livro que deseja emprestar: ");
 
         if(!scan.hasNextInt()){
             System.out.println("Entrada invalida! Digite apenas números");
@@ -98,6 +103,10 @@ public class Main {
 
         int id = scan.nextInt();
         scan.nextLine(); //limpa o scan
+        if (id == 0){
+            menuPrincipal(biblioteca, scan);
+            return;
+        }
         Livro livro = biblioteca.buscarLivroPorId(id);
 
         if (livro == null) {
@@ -120,9 +129,10 @@ public class Main {
     public static void devolverLivro(Biblioteca biblioteca, Scanner scan){
         System.out.println("\n--- LIVROS EMPRESTADOS ---");
         for (Emprestimo emprestimo : biblioteca.listarEmprestimos()) {
-            System.out.printf("ID: %d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(), emprestimo.getLivro().getTitulo(), emprestimo.getNomeCliente());
+            System.out.printf("%02d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(), emprestimo.getLivro().getTitulo(), emprestimo.getNomeCliente());
         }
-        System.out.print("Digite o ID do empréstimo a devolver: ");
+        System.out.println("Digite 0 para retornar ao menu principal");
+        System.out.print("Digite o numero do empréstimo a devolver: ");
         if(!scan.hasNextInt()){
             System.out.println("Entrada invalida! Digite apenas números");
             scan.nextLine(); //limpa o scan
@@ -130,6 +140,10 @@ public class Main {
         }
         int id = scan.nextInt();
         scan.nextLine(); //limpa o scan
+        if (id == 0){
+            menuPrincipal(biblioteca, scan);
+            return;
+        }
         Emprestimo emprestimo = biblioteca.buscarEmprestimoPorId(id);
 
         if (emprestimo == null) {
@@ -156,8 +170,12 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("Cadastro de Autor");
-                    System.out.println("Digite o nome do autor: ");
+                    System.out.println("Digite o nome do autor: (sair para cancelar)");
                     String nomeAutor = scan.nextLine();
+                    if (nomeAutor.equalsIgnoreCase("sair")) {
+                        menuCadastro(biblioteca, scan);
+                        return;
+                    }
                     System.out.println("Digite a data de nascimento do autor (DD-MM-YYY): ");
                     String dataNascimentoStr = scan.nextLine();
                     DateTimeFormatter formatador = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -170,8 +188,9 @@ public class Main {
                     System.out.println("Cadastro de Livro");
                     System.out.println("Para cadastro de livro selecione um autor dos autores cadastrados:");
                     for (Autor autor : biblioteca.listarAutores()) {
-                        System.out.printf("ID: %d | Nome: %s\n", autor.getId(), autor.getNome());
+                        System.out.printf("%02d | Nome: %s\n", autor.getId(), autor.getNome());
                     }
+                    System.out.println("Digite 0 para retornar ao menu principal");
                     System.out.print("Escolha uma opcão: ");
                     if(!scan.hasNextInt()){
                         System.out.println("Entrada invalida! Digite apenas números");
@@ -180,6 +199,10 @@ public class Main {
                     }
                     int id = scan.nextInt();
                     scan.nextLine(); //limpa o scan
+                    if (id == 0){
+                        menuPrincipal(biblioteca, scan);
+                        return;
+                    }
                     Autor autor = biblioteca.buscarAutorPorId(id);
                     if (autor == null) {
                         System.out.println("Autor não encontrado!");
