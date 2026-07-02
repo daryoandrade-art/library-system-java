@@ -1,4 +1,4 @@
-package biblioteca;
+package biblioteca.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

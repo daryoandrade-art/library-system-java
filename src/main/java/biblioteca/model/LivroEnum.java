@@ -1,4 +1,4 @@
-package biblioteca;
+package biblioteca.model;
 
 public enum LivroEnum {
     DISPONIVEL,
