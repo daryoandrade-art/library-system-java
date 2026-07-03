@@ -3,36 +3,41 @@ package biblioteca.model;
 import java.time.LocalDate;
 
 
-public class Emprestimo {
-    private static int cont = 0;
 
+public class Emprestimo {
     private int id;
-    private Livro livro;
+    private int idLivro;
     private String nomeCliente;
     private LocalDate dataEmprestimo;
     private LocalDate dataDevolucao;
 
-    public Emprestimo(Livro livro, String nomeCliente){
-        this.id = ++cont;
-        this.livro = livro;
+    public Emprestimo(String nomeCliente, int idLivro){
         this.nomeCliente = nomeCliente;
-        this.dataEmprestimo = LocalDate.now();
-        this.dataDevolucao = null;
+        this.idLivro = idLivro;
     }
 
-    public void devolveLivro(){
-        if(livro.getStatus() == LivroEnum.INDISPONIVEL){
-            this.dataDevolucao = LocalDate.now();
-            this.livro.devolveLivro();
-        }
+    public Emprestimo(int id, String nomeCliente, int idLivro, LocalDate dataEmprestimo, LocalDate dataDevolucao){
+        this.id = id;
+        this.nomeCliente = nomeCliente;
+        this.idLivro = idLivro;
+        this.dataEmprestimo = dataEmprestimo;
+        this.dataDevolucao = dataDevolucao;
     }
 
-    public Livro getLivro() {
-        return livro;
+    public int getId() {
+        return id;
     }
 
-    public void setLivro(Livro livro) {
-        this.livro = livro;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getIdLivro() {
+        return idLivro;
+    }
+
+    public void setIdLivro(int idLivro) {
+        this.idLivro = idLivro;
     }
 
     public String getNomeCliente() {
@@ -43,15 +48,19 @@ public class Emprestimo {
         this.nomeCliente = nomeCliente;
     }
 
-    public int getId() {
-        return id;
+    public LocalDate getDataDevolucao() {
+        return dataDevolucao;
+    }
+
+    public void setDataDevolucao(LocalDate dataDevolucao) {
+        this.dataDevolucao = dataDevolucao;
     }
 
     public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
     }
 
-    public LocalDate getDataDevolucao() {
-        return dataDevolucao;
+    public void setDataEmprestimo(LocalDate dataEmprestimo) {
+        this.dataEmprestimo = dataEmprestimo;
     }
 }

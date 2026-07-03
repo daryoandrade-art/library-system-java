@@ -1,29 +1,38 @@
 package biblioteca.model;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 public class Livro {
-    private static int cont = 0;
-
     private int id;
     private String titulo;
-    private Autor autor;
+    private int idAutor;
     private LivroEnum status;
-    private LocalDateTime dataCadastro;
-    private LocalDateTime dataAtualizacao;
+    private LocalDate dataCadastro;
+    private LocalDate dataAtualizacao;
 
-    public Livro(String titulo, Autor autor){
-        this.id = ++cont;
+
+
+    public Livro(String titulo, int idAutor){
         this.titulo = titulo;
-        this.autor = autor;
-        this.status = LivroEnum.DISPONIVEL;
-        this.dataCadastro = LocalDateTime.now();
-        this.dataAtualizacao = LocalDateTime.now();
+        this.idAutor = idAutor;
     }
 
-    public void devolveLivro(){
-        this.status = LivroEnum.DISPONIVEL;
-        this.dataAtualizacao = LocalDateTime.now();
+    public Livro(int id, String titulo, int idAutor, String status, LocalDate dataCadastro, LocalDate dataAtualizacao) {
+        this.id = id;
+        this.titulo = titulo;
+        this.idAutor = idAutor;
+        this.status = LivroEnum.valueOf(status);
+        this.dataCadastro = dataCadastro;
+        this.dataAtualizacao = dataAtualizacao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -34,32 +43,35 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public Autor getAutor() {
-        return autor;
-    }
-
-    public void setAutor(Autor autor) {
-        this.autor = autor;
-    }
-
     public LivroEnum getStatus() {
         return status;
     }
 
-    public LocalDateTime getDataCadastro() {
+    public void setStatus(LivroEnum status) {
+        this.status = status;
+    }
+
+    public LocalDate getDataCadastro() {
         return dataCadastro;
     }
 
-    public LocalDateTime getDataAtualizacao() {
+    public void setDataCadastro(LocalDate dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+
+    public LocalDate getDataAtualizacao() {
         return dataAtualizacao;
     }
 
-    public int getId() {
-        return id;
+    public void setDataAtualizacao(LocalDate dataAtualizacao) {
+        this.dataAtualizacao = dataAtualizacao;
     }
 
-    public void emprestaLivro(){
-        this.status = LivroEnum.INDISPONIVEL;
-        this.dataAtualizacao = LocalDateTime.now();
+    public int getIdAutor() {
+        return idAutor;
+    }
+
+    public void setIdAutor(int idAutor) {
+        this.idAutor = idAutor;
     }
 }
