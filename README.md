@@ -1,3 +1,5 @@
+# library-system-java
+
 ## Objetivo
 Desenvolver um sistema de console para gerenciar o empréstimo de livros de uma biblioteca.
 
@@ -11,21 +13,21 @@ Como deve funcionar
 
 
 Estrutura do Projeto
-O projeto será dividido em algumas classes simples para manter a organização. Aqui estão as classes principais e suas funcionalidades:
+O projeto está organizado em pacotes (`model`, `repository`, `db`) e os dados são persistidos em um banco Postgres. Aqui estão as classes principais e suas funcionalidades:
 
 ### Livro
 
   1 - id: Identificador único do livro
-
+  
   2 - titulo: Título do livro
-
-  3 - autor: Autor do livro (objeto do tipo Autor)
-
-  4 - disponivel: Indica se o livro está disponível para empréstimo
-
+  
+  3 - idAutor: Referência ao autor do livro (chave estrangeira para `Autor`)
+  
+  4 - status: Indica se o livro está `DISPONIVEL` ou `INDISPONIVEL` para empréstimo (`LivroEnum`)
+  
   5 - dataCadastro: Data que o livro foi cadastrado
-
-  6 - dataAtualização: Data que o livro foi atualizado
+  
+  6 - dataAtualizacao: Data que o livro foi atualizado
 
 
 ### Autor
@@ -41,7 +43,7 @@ O projeto será dividido em algumas classes simples para manter a organização.
 
   1 - id: Identificador único do empréstimo
 
-  2 - livro: Livro que foi emprestado (objeto do tipo Livro)
+  2 - idLivro: Referência ao livro que foi emprestado (chave estrangeira para `Livro`)
 
   3 - nomeCliente: Nome do cliente que pegou o livro emprestado
 
@@ -52,16 +54,29 @@ O projeto será dividido em algumas classes simples para manter a organização.
 
 ### Biblioteca
 
-  1 - livros: Lista de livros na biblioteca
+Classe de fachada que orquestra as operações de negócio (cadastro, empréstimo, devolução), delegando o acesso a dados para os repositories:
 
-  2 - autores: Lista de autores da biblioteca
+  1 - livroRepository: Acesso a dados de livros
 
-  3 - emprestimos: Lista de empréstimos da biblioteca
+  2 - autorRepository: Acesso a dados de autores
+
+  3 - emprestimoRepository: Acesso a dados de empréstimos
 
 ## Como rodar o projeto
 
 ### Pré-requisitos
 - JDK 17 ou superior instalado
+- Maven instalado
+- Uma instância Postgres acessível (local ou remota)
+
+### Configuração
+Antes de rodar o projeto, crie um arquivo `.env` na raiz com as credenciais do seu banco Postgres:
+```
+DB_URL=jdbc:postgresql://localhost:5432/biblioteca
+DB_USER=seu_usuario
+DB_PASSWORD=sua_senha
+```
+Ao rodar, o Flyway aplica automaticamente as migrations em `src/main/resources/db/migration` e cria as tabelas necessárias.
 
 ### Opção 1 — via IntelliJ IDEA (recomendado)
 1. Clone o repositório:
@@ -72,12 +87,12 @@ O projeto será dividido em algumas classes simples para manter a organização.
 3. Marque `src/main/java` como Sources Root, se necessário (`botão direito → Mark Directory as → Sources Root`)
 4. Execute a classe `Main.java` (botão direito → `Run 'Main.main()'`)
 
-### Opção 2 — via terminal
+### Opção 2 — via terminal (Maven)
 ```bash
 git clone https://github.com/daryoandrade-art/library-system-java.git
-cd library-system-java/src/main/java
-javac biblioteca/*.java
-java biblioteca.Main
+cd library-system-java
+mvn compile
+mvn exec:java -Dexec.mainClass="biblioteca.Main"
 ```
 
 O programa roda em modo console — todas as interações acontecem via terminal, sem interface gráfica.
@@ -89,7 +104,7 @@ Este projeto começou como o desafio "Sistema de Biblioteca" da Rocketseat e est
 
 - [x] CRUD de livros, autores e empréstimos
 - [x] Menu interativo via console
-- [x] Persistência de dados em arquivo - Postgres com JDBC e migration com Flyway
+- [x] Persistência de dados em banco Postgres com JDBC e migrations via Flyway
 - [ ] Multa por atraso na devolução
 - [ ] Busca por autor/categoria
 - [ ] Testes unitários (JUnit)
