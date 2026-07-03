@@ -97,7 +97,7 @@ public class Main {
 
     public static void devolverLivro(Biblioteca biblioteca, Scanner scan) throws SQLException {
         System.out.println("\n--- LIVROS EMPRESTADOS ---");
-        for (Emprestimo emprestimo : biblioteca.listarEmprestimos()) {
+        for (Emprestimo emprestimo : biblioteca.listarEmprestimosPendentes()) {
             Livro livro = biblioteca.buscarLivroPorId(emprestimo.getIdLivro());
             String nomeLivro = livro.getTitulo();
             System.out.printf("%02d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(),nomeLivro, emprestimo.getNomeCliente());

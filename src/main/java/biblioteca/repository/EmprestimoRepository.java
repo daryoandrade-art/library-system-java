@@ -31,7 +31,7 @@ public class EmprestimoRepository {
 
     public Emprestimo devolver(Emprestimo emprestimo) throws SQLException {
         String sqlUpdate = "UPDATE livro SET status = 'DISPONIVEL' WHERE id = ?";
-        String sqlUpdate2 = "UPDATE emprestimo SET data_devolucao = CURRENT_DATE WHERE id = ?";
+        String sqlUpdate2 = "UPDATE emprestimo SET data_devolucao = NOW() WHERE id = ?";
         try (Connection conn = ConexaoDB.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sqlUpdate)) {
             stmt.setInt(1, emprestimo.getIdLivro());
@@ -47,6 +47,26 @@ public class EmprestimoRepository {
 
     public List<Emprestimo> listarTodos() throws SQLException {
         String sql = "SELECT * FROM emprestimo";
+        List<Emprestimo> emprestimos = new ArrayList<>();
+        try (Connection conn = ConexaoDB.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Emprestimo emprestimo = new Emprestimo(
+                        rs.getInt("id"),
+                        rs.getString("nome_cliente"),
+                        rs.getInt("livro_id"),
+                        rs.getDate("data_emprestimo").toLocalDate(),
+                        rs.getDate("data_devolucao") != null ? rs.getDate("data_devolucao").toLocalDate() : null
+                );
+                emprestimos.add(emprestimo);
+            }
+        }
+        return emprestimos;
+    }
+
+    public List<Emprestimo> listarPendentes() throws SQLException {
+        String sql = "SELECT * FROM emprestimo WHERE data_devolucao IS NULL";
         List<Emprestimo> emprestimos = new ArrayList<>();
         try (Connection conn = ConexaoDB.getConnection();
              Statement stmt = conn.createStatement();

@@ -57,9 +57,13 @@ public class Biblioteca {
     public Emprestimo registraDevolucao(Emprestimo emprestimo) throws SQLException{
         return emprestimoRepository.devolver(emprestimo);
     }
-    
+
     public List<Emprestimo> listarEmprestimos() throws SQLException{
         return emprestimoRepository.listarTodos();
+    }
+
+    public List<Emprestimo> listarEmprestimosPendentes() throws SQLException{
+        return emprestimoRepository.listarPendentes();
     }
 
     public Emprestimo buscarEmprestimoPorId(int id) throws SQLException {
