@@ -89,7 +89,7 @@ Este projeto começou como o desafio "Sistema de Biblioteca" da Rocketseat e est
 
 - [x] CRUD de livros, autores e empréstimos
 - [x] Menu interativo via console
-- [ ] Persistência de dados em arquivo
+- [x] Persistência de dados em arquivo - Postgres com JDBC e migration com Flyway
 - [ ] Multa por atraso na devolução
 - [ ] Busca por autor/categoria
 - [ ] Testes unitários (JUnit)
