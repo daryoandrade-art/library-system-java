@@ -23,34 +23,6 @@ public class Main {
 
         Scanner scan = new Scanner(System.in);
         Biblioteca biblioteca = new Biblioteca();
-
-        Livro livro1 = new Livro("Harry Potter e a Pedra Filosofal", biblioteca.buscarAutorPorId(1));
-        Livro livro2 = new Livro("Harry Potter e a Câmara Secreta", biblioteca.buscarAutorPorId(1));
-        Livro livro3 = new Livro("A Game of Thrones", biblioteca.buscarAutorPorId(2));
-        Livro livro4 = new Livro("A Clash of Kings", biblioteca.buscarAutorPorId(2));
-        Livro livro5 = new Livro("Dom Casmurro", biblioteca.buscarAutorPorId(3));
-        Livro livro6 = new Livro("Memórias Póstumas de Brás Cubas", biblioteca.buscarAutorPorId(3));
-        Livro livro7 = new Livro("A Hora da Estrela", biblioteca.buscarAutorPorId(4));
-        Livro livro8 = new Livro("Perto do Coração Selvagem", biblioteca.buscarAutorPorId(4));
-        Livro livro9 = new Livro("O Senhor dos Anéis: A Sociedade do Anel", biblioteca.buscarAutorPorId(5));
-        Livro livro10 = new Livro("O Senhor dos Anéis: As Duas Torres", biblioteca.buscarAutorPorId(5));
-
-        biblioteca.adicionaLivro(livro1);
-        biblioteca.adicionaLivro(livro2);
-        biblioteca.adicionaLivro(livro3);
-        biblioteca.adicionaLivro(livro4);
-        biblioteca.adicionaLivro(livro5);
-        biblioteca.adicionaLivro(livro6);
-        biblioteca.adicionaLivro(livro7);
-        biblioteca.adicionaLivro(livro8);
-        biblioteca.adicionaLivro(livro9);
-        biblioteca.adicionaLivro(livro10);
-
-        biblioteca.registraEmprestimo(livro1, "Daryo S. Andrade");
-
-        biblioteca.registraEmprestimo(livro6, "Daryo S. Andrade");
-
-
         menuPrincipal(biblioteca, scan);
         scan.close();
     }
@@ -84,7 +56,7 @@ public class Main {
         }
     }
 
-    public static void emprestarLivro(Biblioteca biblioteca, Scanner scan){
+    public static void emprestarLivro(Biblioteca biblioteca, Scanner scan) throws SQLException {
         System.out.println("\n--- LIVROS DISPONÍVEIS ---");
         for (Livro livro : biblioteca.ListarLivrosDisponiveis()) {
             System.out.printf("%02d |  Titulo: %s\n", livro.getId(), livro.getTitulo());
@@ -117,16 +89,18 @@ public class Main {
 
         System.out.print("Digite o nome do responsavel pelo emprestimo: ");
         String nomeCliente = scan.nextLine();
-        Emprestimo emprestimo = biblioteca.registraEmprestimo(livro, nomeCliente);
+        Emprestimo emprestimo = biblioteca.registraEmprestimo(nomeCliente, id);
         System.out.println("\nEmpréstimo registrado com sucesso!");
         menuPrincipal(biblioteca, scan);
 
     }
 
-    public static void devolverLivro(Biblioteca biblioteca, Scanner scan){
+    public static void devolverLivro(Biblioteca biblioteca, Scanner scan) throws SQLException {
         System.out.println("\n--- LIVROS EMPRESTADOS ---");
         for (Emprestimo emprestimo : biblioteca.listarEmprestimos()) {
-            System.out.printf("%02d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(), emprestimo.getLivro().getTitulo(), emprestimo.getNomeCliente());
+            Livro livro = biblioteca.buscarLivroPorId(emprestimo.getIdLivro());
+            String nomeLivro = livro.getTitulo();
+            System.out.printf("%02d |  Titulo: %s | Cliente: %s\n", emprestimo.getId(),nomeLivro, emprestimo.getNomeCliente());
         }
         System.out.println("Digite 0 para retornar ao menu principal");
         System.out.print("Digite o numero do empréstimo a devolver: ");
@@ -136,22 +110,24 @@ public class Main {
             return;
         }
         int id = scan.nextInt();
+        Emprestimo emprestimo = biblioteca.buscarEmprestimoPorId(id);
         scan.nextLine(); //limpa o scan
         if (id == 0){
             menuPrincipal(biblioteca, scan);
             return;
         }
-        Emprestimo emprestimo = biblioteca.buscarEmprestimoPorId(id);
 
         if (emprestimo == null) {
             System.out.println("Empréstimo não encontrado!");
             return;
         }
-        if (emprestimo.getLivro().getStatus() == LivroEnum.DISPONIVEL) {
+        Livro livro = biblioteca.buscarLivroPorId(emprestimo.getIdLivro());
+        if (livro.getStatus() == LivroEnum.DISPONIVEL) {
             System.out.println("Livro já devolvido!");
             return;
         }
-        emprestimo.devolveLivro();
+        biblioteca.registraDevolucao(emprestimo);
+        System.out.println("\nDevolução registrada com sucesso!");
         menuPrincipal(biblioteca, scan);
     }
 
@@ -205,10 +181,9 @@ public class Main {
                         System.out.println("Autor não encontrado!");
                         return;
                     }
-                    String autorNome = autor.getNome();
                     System.out.println("Digite o nome do livro");
                     String titulo = scan.nextLine();
-                    biblioteca.cadastrarLivro(titulo, autor);
+                    biblioteca.cadastrarLivro(titulo, autor.getId());
                     System.out.println("Livro cadastrado com sucesso!");
                     menuPrincipal(biblioteca, scan);
                     break;
